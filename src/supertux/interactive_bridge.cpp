@@ -90,7 +90,7 @@ namespace
   void add_floating_name(Sector& sector, const Vector& pos, const std::string& nickname)
   {
     if (nickname.empty()) return;
-    sector.add_object(std::make_unique<InteractiveNickname>(Vector(pos.x, pos.y - 40.0f), safe_nickname(nickname)));
+    sector.add_object(std::make_unique<InteractiveNickname>(Vector(pos.x, pos.y - 90.0f), safe_nickname(nickname)));
   }
 
   void spawn_enemy(Sector& sector, const std::string& enemy, int quantity, const std::string& nickname)
@@ -105,7 +105,7 @@ namespace
     for (int i = 0; i < quantity; ++i)
     {
       const float offset_x = 120.0f + static_cast<float>((i % 5) * 38);
-      const float offset_y = -30.0f - static_cast<float>((i / 5) * 32);
+      const float offset_y = -80.0f - static_cast<float>((i / 5) * 32);
       const Vector pos(base.x + offset_x, base.y + offset_y);
 
       try {
