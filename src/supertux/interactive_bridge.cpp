@@ -15,7 +15,7 @@
 #include <vector>
 
 #include "math/vector.hpp"
-#include "object/floating_text.hpp"
+#include "object/interactive_nickname.hpp"
 #include "object/player.hpp"
 #include "supertux/sector.hpp"
 
@@ -90,7 +90,7 @@ namespace
   void add_floating_name(Sector& sector, const Vector& pos, const std::string& nickname)
   {
     if (nickname.empty()) return;
-    sector.add_object(std::make_unique<FloatingText>(Vector(pos.x, pos.y - 40.0f), safe_nickname(nickname)));
+    sector.add_object(std::make_unique<InteractiveNickname>(Vector(pos.x, pos.y - 40.0f), safe_nickname(nickname)));
   }
 
   void spawn_enemy(Sector& sector, const std::string& enemy, int quantity, const std::string& nickname)
