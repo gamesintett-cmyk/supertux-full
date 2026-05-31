@@ -109,7 +109,7 @@ namespace
       const Vector pos(base.x + offset_x, base.y + offset_y);
 
       try {
-        sector.add_object_scripting(enemy, "", pos, "auto", "");
+        sector.add_object(enemy, "", pos, "auto", "");
         add_floating_name(sector, pos, nickname);
       } catch (...) {
         // Ignore invalid objects so one bad command does not crash the game.
@@ -134,7 +134,7 @@ namespace
       const std::string data = " (type \"" + type + "\")";
 
       try {
-        sector.add_object_scripting("powerup", "", pos, "auto", data);
+        sector.add_object("powerup", "", pos, "auto", data);
         add_floating_name(sector, pos, nickname);
       } catch (...) {
       }
