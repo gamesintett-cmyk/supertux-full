@@ -12,7 +12,7 @@ class InteractiveNickname final : public GameObject
 {
 public:
   InteractiveNickname(MovingObject* target, const std::string& text);
-
+  InteractiveNickname(const Vector& pos, const std::string& text);
   void update(float dt_sec) override;
   void draw(DrawingContext& context) override;
 

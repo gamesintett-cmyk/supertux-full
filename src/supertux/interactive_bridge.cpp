@@ -90,7 +90,7 @@ namespace
   void add_floating_name(Sector& sector, const Vector& pos, const std::string& nickname)
   {
     if (nickname.empty()) return;
-    sector.add_object(std::make_unique<InteractiveNickname>(&npc, safe_nickname(nickname)));
+    sector.add_object(std::make_unique<InteractiveNickname>(Vector(pos.x, pos.y - 90.0f), safe_nickname(nickname)));
   }
 
   void spawn_enemy(Sector& sector, const std::string& enemy, int quantity, const std::string& nickname)
@@ -109,7 +109,7 @@ namespace
       const Vector pos(base.x + offset_x, base.y + offset_y);
 
       try {
-        MovingObject& npc = sector.add_object_scripting(enemy, "", pos, "auto", "");
+        sector.add_object(enemy, "", pos.x, pos.y, "auto", "");
         add_floating_name(sector, pos, nickname);
       } catch (...) {
         // Ignore invalid objects so one bad command does not crash the game.
