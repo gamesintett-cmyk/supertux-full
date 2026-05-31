@@ -19,7 +19,7 @@
 #include <cfloat>
 #include <fmt/format.h>
 #include <stdexcept>
-
+#include "supertux/interactive_bridge.hpp"
 #include "audio/sound_manager.hpp"
 #include "control/input_manager.hpp"
 #include "editor/editor.hpp"
@@ -592,6 +592,10 @@ GameSession::leave()
 void
 GameSession::update(float dt_sec, const Controller& controller)
 {
+	if (m_currentsector != nullptr)
+  {
+    InteractiveBridge::process_pending_commands(*m_currentsector);
+  }
   // Set active flag.
   if (!m_active)
   {
