@@ -88,6 +88,15 @@ namespace
     return std::find(allowed.begin(), allowed.end(), type) != allowed.end();
   }
 
+  bool is_allowed_object(const std::string& type)
+  {
+    static const std::vector<std::string> allowed = {
+      "powerup", "coin", "bonusblock", "brick",
+      "explosion", "rock", "trampoline", "lantern", "key"
+    };
+    return std::find(allowed.begin(), allowed.end(), type) != allowed.end();
+  }
+
   void add_following_name(Sector& sector, MovingObject& target, const std::string& nickname)
   {
     if (nickname.empty()) return;
@@ -147,6 +156,30 @@ namespace
       }
     }
   }
+
+  void spawn_object(Sector& sector, const std::string& type, int quantity, const std::string& nickname)
+  {
+    if (!is_allowed_object(type)) return;
+    auto players = sector.get_players();
+    if (players.empty() || players[0] == nullptr) return;
+
+    const Vector base = players[0]->get_pos();
+    quantity = std::clamp(quantity, 1, 25);
+
+    for (int i = 0; i < quantity; ++i)
+    {
+      const float offset_x = 80.0f + static_cast<float>((i % 8) * 34);
+      const float offset_y = -70.0f - static_cast<float>((i / 8) * 32);
+      const Vector pos(base.x + offset_x, base.y + offset_y);
+
+      try {
+        MovingObject& obj = sector.add_interactive_object(type, pos, "auto", "");
+        add_following_name(sector, obj, nickname);
+      } catch (...) {
+        // Ignore invalid objects so one bad command does not crash the game.
+      }
+    }
+  }
 }
 
 namespace InteractiveBridge
@@ -191,6 +224,11 @@ namespace InteractiveBridge
       {
         const std::string type = cmd.count("type") ? cmd.at("type") : "fire";
         spawn_powerup(sector, type, quantity, nickname);
+      }
+      else if (action == "object")
+      {
+        const std::string type = cmd.count("type") ? cmd.at("type") : "coin";
+        spawn_object(sector, type, quantity, nickname);
       }
     }
   }

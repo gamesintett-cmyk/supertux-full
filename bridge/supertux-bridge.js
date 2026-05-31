@@ -53,12 +53,29 @@ const server = http.createServer((req, res) => {
       writeCommand({ action: 'powerup', type, quantity: Math.min(quantity, 10), nickname });
       return send(res, 200, { ok: true, action: 'powerup', type, quantity: Math.min(quantity, 10), nickname });
     }
+if (url.pathname === '/object') {
+  const type = cleanId(url.searchParams.get('type') || url.searchParams.get('id'), 'coin');
 
+  writeCommand({
+    action: 'object',
+    type,
+    quantity,
+    nickname
+  });
+
+  return send(res, 200, {
+    ok: true,
+    action: 'object',
+    type,
+    quantity,
+    nickname
+  });
+}
     if (url.pathname === '/health') {
       return send(res, 200, { ok: true, commandFile: COMMAND_FILE });
     }
 
-    send(res, 404, { ok: false, error: 'Use /spawn or /powerup' });
+    send(res, 404, { ok: false, error: 'Use /spawn, /powerup or /object' });
   } catch (err) {
     send(res, 500, { ok: false, error: String(err.message || err) });
   }
