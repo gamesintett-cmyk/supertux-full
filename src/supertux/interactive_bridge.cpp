@@ -110,7 +110,7 @@ namespace
 
       try {
         sector.add_object(enemy, "", pos.x, pos.y, "auto", "");
-        // add_floating_name(sector, pos, nickname);
+        add_floating_name(sector, pos, nickname);
       } catch (...) {
         // Ignore invalid objects so one bad command does not crash the game.
       }
@@ -135,7 +135,7 @@ namespace
 
       try {
         sector.add_object("powerup", "", pos.x, pos.y, "auto", data);
-        // add_floating_name(sector, pos, nickname);
+        add_floating_name(sector, pos, nickname);
       } catch (...) {
       }
     }
