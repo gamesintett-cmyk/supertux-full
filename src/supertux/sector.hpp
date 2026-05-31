@@ -232,10 +232,7 @@ public:
   inline TextObject& get_text_object() const { return m_text_object; }
 
   std::vector<Player*> get_players() const;
-MovingObject& add_interactive_object(const std::string& class_name,
-                                     const Vector& pos,
-                                     const std::string& direction = "auto",
-                                     const std::string& data = "");
+
 
   /** Creates an interactive object and returns the spawned MovingObject.
       Used by the TikTok/Inkafinity interactive bridge so nicknames can follow spawned enemies. */
