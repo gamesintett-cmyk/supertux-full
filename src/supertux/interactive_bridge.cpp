@@ -13,10 +13,11 @@
 #include <sstream>
 #include <string>
 #include <vector>
-#include "supertux/moving_object.hpp"
+
 #include "math/vector.hpp"
 #include "object/interactive_nickname.hpp"
 #include "object/player.hpp"
+#include "supertux/moving_object.hpp"
 #include "supertux/sector.hpp"
 
 namespace
@@ -87,10 +88,15 @@ namespace
     return std::find(allowed.begin(), allowed.end(), type) != allowed.end();
   }
 
-  void add_floating_name(Sector& sector, const Vector& pos, const std::string& nickname)
+  void add_following_name(Sector& sector, MovingObject& target, const std::string& nickname)
   {
     if (nickname.empty()) return;
-    sector.add_object(std::make_unique<InteractiveNickname>(Vector(pos.x, pos.y - 90.0f), safe_nickname(nickname)));
+    sector.add_object(
+      std::make_unique<InteractiveNickname>(
+        &target,
+        safe_nickname(nickname)
+      )
+    );
   }
 
   void spawn_enemy(Sector& sector, const std::string& enemy, int quantity, const std::string& nickname)
@@ -109,8 +115,8 @@ namespace
       const Vector pos(base.x + offset_x, base.y + offset_y);
 
       try {
-        sector.add_object(enemy, "", pos.x, pos.y, "auto", "");
-        add_floating_name(sector, pos, nickname);
+        MovingObject& npc = sector.add_interactive_object(enemy, pos, "auto", "");
+        add_following_name(sector, npc, nickname);
       } catch (...) {
         // Ignore invalid objects so one bad command does not crash the game.
       }
@@ -134,9 +140,10 @@ namespace
       const std::string data = " (type \"" + type + "\")";
 
       try {
-        sector.add_object("powerup", "", pos.x, pos.y, "auto", data);
-        add_floating_name(sector, pos, nickname);
+        MovingObject& powerup = sector.add_interactive_object("powerup", pos, "auto", data);
+        add_following_name(sector, powerup, nickname);
       } catch (...) {
+        // Ignore invalid objects so one bad command does not crash the game.
       }
     }
   }

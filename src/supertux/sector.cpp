@@ -874,6 +874,14 @@ Sector::get_players() const
   return m_level.get_players();
 }
 
+MovingObject&
+Sector::add_interactive_object(const std::string& class_name,
+                               const Vector& pos,
+                               const std::string& direction,
+                               const std::string& data)
+{
+  return add_object_scripting(class_name, "", pos, direction, data);
+}
 
 void
 Sector::register_class(ssq::VM& vm)
